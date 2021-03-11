@@ -8,7 +8,10 @@
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 melon-summary">
 
               <div class="well">
+                  <!-- these links are taking users only to one melon type's page;; may be where we implement python -->
                   <h3><a href="/melon/{{ melon.melon_id }}">{{ melon.common_name }}</a></h3>
+                    <!-- e.g. address of page:  localhost:5000/melon/cren -->
+                    <!-- will use to melon_details template to display info at above address -->
                   <a href="/melon/{{ melon.melon_id }}">
                       <img src="{{ melon.image_url }}" class="img-circle">
                   </a>

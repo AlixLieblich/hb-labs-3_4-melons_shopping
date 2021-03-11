@@ -9,6 +9,7 @@ Authors: Joel Burton, Christian Fernandez, Meggie Mahnken, Katie Byers.
 from flask import Flask, render_template, redirect, flash
 import jinja2
 
+# this is melons.py to import functions of the melons class
 import melons
 
 app = Flask(__name__)
@@ -27,30 +28,31 @@ app.jinja_env.undefined = jinja2.StrictUndefined
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 
-@app.route("/")
+@app.route("/") ###this is the wolf
 def index():
     """Return homepage."""
 
     return render_template("homepage.html")
 
 
-@app.route("/melons")
+@app.route("/melons") ### we've clicked the shop now button, and now we're at the /melons, Top Selling Melons
 def list_melons():
     """Return page showing all the melons ubermelon has to offer"""
 
-    melon_list = melons.get_all()
+    melon_list = melons.get_all() # get.all() is a function melons.py
     return render_template("all_melons.html",
-                           melon_list=melon_list)
+                           melon_list=melon_list) 
 
 
-@app.route("/melon/<melon_id>")
+@app.route("/melon/<melon_id>") 
 def show_melon(melon_id):
     """Return page showing the details of a given melon.
 
     Show all info about a melon. Also, provide a button to buy that melon.
     """
 
-    melon = melons.get_by_id("meli")
+    ## TODO: This line WAS broken because of "meli", should be variable name 'melon_id'
+    melon = melons.get_by_id(melon_id)
     print(melon)
     return render_template("melon_details.html",
                            display_melon=melon)
