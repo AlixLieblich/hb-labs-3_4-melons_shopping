@@ -6,7 +6,7 @@ put melons in a shopping cart.
 Authors: Joel Burton, Christian Fernandez, Meggie Mahnken, Katie Byers.
 """
 
-from flask import Flask, render_template, redirect, flash
+from flask import Flask, render_template, redirect, flash, session
 import jinja2
 
 # this is melons.py to import functions of the melons class
@@ -52,6 +52,7 @@ def show_melon(melon_id):
     """
 
     ## TODO: This line WAS broken because of "meli", should be variable name 'melon_id'
+
     melon = melons.get_by_id(melon_id)
     print(melon)
     return render_template("melon_details.html",
@@ -83,7 +84,7 @@ def show_shopping_cart():
     return render_template("cart.html")
 
 
-@app.route("/add_to_cart/<melon_id>")
+@app.route("/add_to_cart/<melon_id>") # clicked 'add to cart' button on indv melon info page
 def add_to_cart(melon_id):
     """Add a melon to cart and redirect to shopping cart page.
 
@@ -101,6 +102,12 @@ def add_to_cart(melon_id):
     # - increment the count for that melon id by 1
     # - flash a success message
     # - redirect the user to the cart page
+
+
+    session["cart"] = session.get("cart", {})
+    #lettercounts[letter] = lettercounts.get(letter,0) + 1
+    session["cart"][melon_id] = session["cart"].get(melon_id, 0) + 1
+        
 
     return "Oops! This needs to be implemented!"
 
