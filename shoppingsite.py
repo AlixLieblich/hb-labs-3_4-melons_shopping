@@ -68,20 +68,30 @@ def show_shopping_cart():
     # The logic here will be something like:
     #
     # - get the cart dictionary from the session
+    #session["cart"]
     # - create a list to hold melon objects and a variable to hold the total
     #   cost of the order
+    cart = []
+    total = 0    
     # - loop over the cart dictionary, and for each melon id:
+    for melon_id in session["cart"]:
     #    - get the corresponding Melon object
+        melon = melons.get_by_id(melon_id) # gives melon object when takes in melon_id
     #    - compute the total cost for that type of melon
+        melon_total = melon.price * session["cart"][melon_id] # price * quantity
     #    - add this to the order total
+        total += melon_total 
     #    - add quantity and total cost as attributes on the Melon object
+        melon.quantity = session["cart"][melon_id]
+        melon.melon_total = melon_total
     #    - add the Melon object to the list created above
+        cart.append(melon)
     # - pass the total order cost and the list of Melon objects to the template
     #
     # Make sure your function can also handle the case wherein no cart has
     # been added to the session
-
-    return render_template("cart.html")
+    print(cart)
+    return render_template("cart.html", total=total, cart=cart)
 
 
 @app.route("/add_to_cart/<melon_id>") # clicked 'add to cart' button on indv melon info page
@@ -103,13 +113,19 @@ def add_to_cart(melon_id):
     # - flash a success message
     # - redirect the user to the cart page
 
-
+    # cart is a dict with keys=melon_id and values=quantity
     session["cart"] = session.get("cart", {})
-    #lettercounts[letter] = lettercounts.get(letter,0) + 1
     session["cart"][melon_id] = session["cart"].get(melon_id, 0) + 1
-        
+    print(session['cart'])
+    melon_in_cart = melons.melon_types[melon_id].common_name
+    flash(f"{melon_in_cart} was added to cart.")
+    # go to melons.py  and get the dict called melon_types 
+    # ... look at key melon_id and find the Melon object
+    # ... from that object, pull out the attribute named common_name and print it!
+    
 
-    return "Oops! This needs to be implemented!"
+    return redirect("/cart")
+
 
 
 @app.route("/login", methods=["GET"])
